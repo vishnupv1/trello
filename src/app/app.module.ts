@@ -10,6 +10,10 @@ import { MaterialModule } from './matcomponents'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BoardViewComponent } from './modules/board-view/board-view.component';
+import { StoreModule } from '@ngrx/store';
+import { listReducer } from './store/reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { FirstpageComponent } from './modules/firstpage/firstpage.component';
 
 
 @NgModule({
@@ -17,7 +21,8 @@ import { BoardViewComponent } from './modules/board-view/board-view.component';
     AppComponent,
     HomeComponent,
     HeaderComponent,
-    BoardViewComponent
+    BoardViewComponent,
+    FirstpageComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +31,12 @@ import { BoardViewComponent } from './modules/board-view/board-view.component';
     MaterialModule,
     ReactiveFormsModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    StoreModule.forRoot({
+      lists: listReducer,
+
+    }),
+    EffectsModule.forRoot([]),
 
   ],
   providers: [],

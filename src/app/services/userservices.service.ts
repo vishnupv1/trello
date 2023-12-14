@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { addBoard, addList, getBoards } from '../endpoint';
+import { addBoard, addCard, addList, getBoard, getBoards, getList, getLists } from '../endpoint';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -16,14 +16,20 @@ export class UserservicesService {
   getBoards(boardname: any): Observable<any> {
     return this.http.get<any>(`${getBoards}?boardname=${boardname}`)
   }
+  getBoard(): Observable<any> {
+    return this.http.get<any>(`${getBoard}`)
+  }
   addList(listData: any): Observable<any> {
-    console.log(listData);
-
     return this.http.post<any>(addList, listData);
   }
-  getList(boardname: any): Observable<any> {
-    return this.http.get<any>(`${getBoards}?boardname=${boardname}`)
+  addCard(cardData: any, listname: string): Observable<any> {
+    return this.http.post<any>(`${addCard}?listname=${listname}`, cardData);
   }
-
+  getList(): Observable<any> {
+    return this.http.get<any>(`${getList}`)
+  }
+  getLists(boardname: any): Observable<any> {
+    return this.http.get<any>(`${getLists}?boardname=${boardname}`)
+  }
 
 }

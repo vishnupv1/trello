@@ -15,64 +15,141 @@
 <!-- app.component.html -->
 
 <app-header class="sticky top-0"></app-header>
-
-<div class="h-screen bg-blue-500">
+<div class="h-screen bg-[#d9dbc3]">
   <div class="p-6">
-    <p class="text-white font-semibold text-md">
+    <p class="text-gray-600 font-semibold text-md">
       {{ getBoardname }}
     </p>
+    <div class="flex">
+      <div *ngIf="lists" class="flex flex-wrap gap-2">
+        <div
+          class="cursor-pointer mr-4 bg-gray-100 text-gray-800 flex items-center rounded-lg"
+          *ngFor="let item of lists; let i = index"
+        >
+          <div class="p-2 text-md font-semibold">
+            <p>{{ item.listname }}</p>
 
-    <!-- Show "Add List" or "New List" div based on a condition -->
-    <ng-container *ngIf="showAddList; else newList">
-      <div
-        class="cursor-pointer hover:bg-gray-200 hover:text-gray-800 h-12 w-44 flex items-center justify-center rounded-lg"
-        (click)="showAddListForm()"
-      >
-        <p class="text-lg">+ Add a list</p>
-      </div>
-    </ng-container>
-
-    <ng-template #newList>
-      <div class="flex items-center rounded-lg bg-white w-1/4">
-        <form [formGroup]="listform" (ngSubmit)="onSubmit()" class="w-full">
-          <div class="flex flex-col p-3">
-            <input
-              placeholder="Enter list title"
-              formControlName="name"
-              class="mr-2 p-2 border border-gray-300 rounded w-full"
-            />
-            <input
-              hidden
-              placeholder="Enter list title"
-              formControlName="boardname"
-              class="mr-2 p-2 border border-gray-300 rounded w-full"
-            />
-            <div class="flex">
-              <button
-                class="m-2 w-1/2 bg-green-500 text-white px-4 py-2 rounded"
+            <div
+              *ngFor="let card of item.cards; let j = index"
+              class="drop w-full h-full p-1 flex flex-col items-center justify-center"
+              id="dp1"
+              droppable="true"
+              (dragover)="onDragOver($event)"
+              (drop)="onDrop($event)"
+            >
+              <div
+                id="dg5"
+                draggable="true"
+                class="drag w-full bg-white p-2 rounded-md shadow-md text-gray-500 mt-1"
+                (dragstart)="onDragStart($event)"
               >
-                Add List
-              </button>
-              <button (click)="cancelAddList()">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="w-6 h-6"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
+                {{ card.cardname }}
+              </div>
             </div>
+
+            <ng-container *ngIf="showAddCard[i]; else newCard">
+              <div
+                class="cursor-pointer hover:bg-gray-200 hover:text-gray-800 h-12 w-44 flex items-center justify-center rounded-lg"
+                (click)="showAddCardForm(i)"
+              >
+                <p class="text-lg">+ Add a card</p>
+              </div>
+            </ng-container>
+
+            <ng-template #newCard>
+              <div class="flex items-center rounded-lg bg-white">
+                <form
+                  [formGroup]="cardForm"
+                  (ngSubmit)="onCardSubmit(item.listname)"
+                  class="w-full"
+                >
+                  <div class="flex flex-col p-3">
+                    <input
+                      placeholder="Enter a title for this card"
+                      formControlName="cardname"
+                      class="mr-2 p-2 border border-gray-300 rounded w-full"
+                    />
+                    <div class="flex">
+                      <button
+                        class="m-2 w-1/2 bg-green-500 text-white px-4 py-2 rounded"
+                      >
+                        Add card
+                      </button>
+                      <button (click)="cancelAddCard(i)">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          class="w-6 h-6"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </ng-template>
           </div>
-        </form>
+        </div>
+        <ng-container *ngIf="showAddList; else newList">
+          <div
+            class="cursor-pointer hover:bg-gray-200 hover:text-gray-800 h-12 w-44 flex items-center justify-center rounded-lg"
+            (click)="showAddListForm()"
+          >
+            <p class="text-lg">+ Add a list</p>
+          </div>
+        </ng-container>
+
+        <ng-template #newList>
+          <div class="flex items-center rounded-lg bg-white">
+            <form [formGroup]="listform" (ngSubmit)="onSubmit()" class="w-full">
+              <div class="flex flex-col p-3">
+                <input
+                  placeholder="Enter list title"
+                  formControlName="name"
+                  class="mr-2 p-2 border border-gray-300 rounded w-full"
+                />
+                <input
+                  hidden
+                  placeholder="Enter list title"
+                  formControlName="boardname"
+                  class="mr-2 p-2 border border-gray-300 rounded w-full"
+                />
+                <div class="flex">
+                  <button
+                    class="m-2 w-1/2 bg-green-500 text-white px-4 py-2 rounded"
+                  >
+                    Add List
+                  </button>
+                  <button (click)="cancelAddList()">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="w-6 h-6"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </ng-template>
       </div>
-    </ng-template>
+    </div>
   </div>
 </div>

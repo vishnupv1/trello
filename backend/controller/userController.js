@@ -34,10 +34,10 @@ const addList = async (req, res) => {
     try {
         const { name, boardname } = req.body
         const boardData = await board.findOne({ boardname: boardname })
-        console.log(boardData);
         if (boardData) {
             const newList = new list({
                 listname: name,
+                boardname: boardname,
                 boardId: boardData._id
             })
             const ListData = await newList.save();
@@ -53,12 +53,64 @@ const addList = async (req, res) => {
         res.status(500).json('server error')
     }
 }
-const getList = async (req, res) => {
+const getLists = async (req, res) => {
     try {
         const boardname = req.query.boardname
-        const listData = await board.find({ boardname })
+        const boardData = await board.find({ boardname })
         if (boardData) {
+            const listData = await list.find({ boardname: boardname })
+            if (listData) {
+                return res.status(200).json(listData)
+            }
+            else {
+                return res.status(400).json('Not found')
+            }
+        } else {
+            return res.status(400).json('Not found')
+        }
+    }
+    catch {
+
+    }
+}
+const getList = async (req, res) => {
+    try {
+        const listData = await list.find({})
+        if (listData) {
             return res.status(200).json(listData)
+        } else {
+            return res.status(400).json('Not found')
+        }
+    }
+    catch {
+
+    }
+}
+const addCard = async (req, res) => {
+    try {
+        const { cardname } = req.body
+        const listData = await list.findOne({ listname: req.query.listname })
+        if (listData) {
+            listData.cards.push({ cardname });
+
+            const updatedData = await listData.save();
+            if (updatedData) {
+                res.status(200).json(listData)
+            } else {
+                res.status(500).json('server error')
+            }
+        } else {
+            res.status(500).json('server error')
+        }
+    } catch (err) {
+        res.status(500).json('server error')
+    }
+}
+const getBoard = async (req, res) => {
+    try {
+        const boardData = await board.find()
+        if (boardData) {
+            return res.status(200).json(boardData)
         } else {
             return res.status(400).json('Not found')
         }
@@ -71,5 +123,8 @@ module.exports = {
     addBoard,
     getBoards,
     addList,
-    getList
+    getList,
+    getLists,
+    addCard,
+    getBoard
 }

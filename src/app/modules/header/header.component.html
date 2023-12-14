@@ -1,4 +1,4 @@
-<div class="flex w-full bg-gray-600 h-10 items-center">
+<div class="flex w-full bg-[#b1b39b] h-10 items-center">
   <div class="flex items-center w-22 h-6">
     <button
       mat-icon-button
@@ -24,7 +24,8 @@
       </span>
     </button>
   </div>
-  <div class="hover:bg-gray-400 hover:rounded-md flex items-center w-22 h-6">
+  <div class="cursor-pointer hover:rounded-md flex items-center w-22 h-6"
+  (click)="navigateTo('page')">
     <img
       class="w-18 h-4"
       src="https://trello.com/assets/87e1af770a49ce8e84e3.gif"

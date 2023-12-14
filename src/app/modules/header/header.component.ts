@@ -66,4 +66,8 @@ export class HeaderComponent {
       };
     }
   }
+  navigateTo(page: string) {
+    this.route.navigate(['page'])
+
+  }
 }
