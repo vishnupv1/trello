@@ -1,5 +1,6 @@
 const board = require('../model/boardModel')
 const list = require('../model/listModel')
+const { v4: uuidv4 } = require('uuid');
 const addBoard = async (req, res) => {
     try {
         const { name } = req.body
@@ -91,7 +92,7 @@ const addCard = async (req, res) => {
         const { cardname } = req.body
         const listData = await list.findOne({ listname: req.query.listname })
         if (listData) {
-            listData.cards.push({ cardname });
+            listData.cards.push({ cardname, id: uuidv4() });
 
             const updatedData = await listData.save();
             if (updatedData) {
@@ -106,6 +107,42 @@ const addCard = async (req, res) => {
         res.status(500).json('server error')
     }
 }
+const addCardDrag = async (req, res) => {
+    try {
+        const { cardId, cardname, listname, listnameToDelete } = req.body;
+        const deleteCardListData = await list.findOne({ listname: listnameToDelete });
+        if (deleteCardListData) {
+            deleteCardListData.cards = deleteCardListData.cards.filter(card => card.id !== cardId);
+            const updatedDeleteListData = await deleteCardListData.save();
+
+            if (updatedDeleteListData) {
+                const listData = await list.findOne({ listname: listname });
+
+                if (listData) {
+                    listData.cards.push({ cardname, id: cardId });
+
+                    const updatedData = await listData.save();
+
+                    if (updatedData) {
+                        res.status(200).json(listData);
+                    } else {
+                        res.status(500).json('Server error');
+                    }
+                } else {
+                    res.status(500).json('Server error');
+                }
+            } else {
+                res.status(500).json('Server error');
+            }
+        } else {
+            res.status(404).json('List not found');
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json('Server error');
+    }
+};
+
 const getBoard = async (req, res) => {
     try {
         const boardData = await board.find()
@@ -126,5 +163,6 @@ module.exports = {
     getList,
     getLists,
     addCard,
-    getBoard
+    getBoard,
+    addCardDrag
 }

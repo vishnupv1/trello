@@ -36,8 +36,6 @@ export class HeaderComponent {
       (response) => {
         this.cardOpen = false
         this.route.navigate([`board/${response}`])
-
-
       }, (error) => {
 
       })
@@ -68,6 +66,8 @@ export class HeaderComponent {
   }
   navigateTo(page: string) {
     this.route.navigate(['page'])
-
+  }
+  cancelAddCard() {
+    this.cardOpen = false
   }
 }

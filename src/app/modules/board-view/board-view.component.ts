@@ -16,7 +16,8 @@ export class BoardViewComponent {
   boardname!: string
   lists$!: Observable<any[]>
   lists!: any[]
-
+  listnameToDelete!: string
+  cardIdtoAdd!: string
   getBoardname!: string
   indexes = [];
 
@@ -36,7 +37,6 @@ export class BoardViewComponent {
     private fb: FormBuilder,
     private router: Router) {
   }
-
   ngOnInit() {
     this.routeSubscription = this.route.params.subscribe(params => {
       this.boardname = params['boardname'];
@@ -105,21 +105,27 @@ export class BoardViewComponent {
       })
     this.showAddList = true;
   }
-  onDragStart(event: any) {
+  onDragStart(event: any, startListName: string, id: string) {
+
     this.dragTemp = event.target;
+    this.listnameToDelete = startListName
+    this.cardIdtoAdd = id
+
   }
   onDragOver(event: any) {
     event.preventDefault();
   }
-  onDrop(event: any) {
+  onDrop(event: any, listname: string) {
     event.preventDefault();
     const targetElement = event.target;
     if (targetElement && targetElement.classList.contains('drop')) {
       targetElement.appendChild(this.dragTemp);
-      const targetId = targetElement.id;
-      const dragChildren = targetElement.getElementsByClassName('drag');
-      Array.from(dragChildren).forEach((child: any) => {
-      });
+      const cardname = this.dragTemp.innerText
+      this.userService.addCardDrag(this.cardIdtoAdd, cardname, listname, this.listnameToDelete).subscribe(
+        (response) => {
+          this.ngOnInit()
+        }, (error) => {
+        })
     }
   }
   onCardSubmit(itemname: string) {
@@ -139,5 +145,4 @@ export class BoardViewComponent {
       })
     this.showAddList = true;
   }
-
 }

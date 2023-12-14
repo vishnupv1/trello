@@ -1,18 +1,23 @@
-<app-header class="sticky top-0"></app-header>
-<div class=" bg-[#e2e6ba]">
-  <div class="p-4  ">
-    <p class=" fixed bg-[#e2e6ba] rounded-lg text-lg font-semibold text-gray-700">Workspaces</p>
+<app-header class="sticky top-0" style="z-index: 1"></app-header>
+<div class="bg-[#e2e6ba]">
+  <div class="p-4">
+    <p
+      class="fixed bg-[#e2e6ba] rounded-lg text-lg font-semibold text-gray-700"
+      style="z-index: 0"
+    >
+      Workspaces
+    </p>
   </div>
   <div class="p-4 flex flex-wrap">
     <div
       *ngFor="let item of boards"
       class="max-w-sm m-2 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 w-1/3"
     >
-      <a >
+      <a>
         <img class="rounded-t-lg" src="{{ item.backGroundImage }}" alt="" />
       </a>
       <div class="p-5">
-        <a >
+        <a>
           <h5
             class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
           >

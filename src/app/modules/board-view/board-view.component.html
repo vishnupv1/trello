@@ -1,19 +1,3 @@
-<!-- <app-header class="sticky top-0"></app-header>
-<div class="h-screen bg-blue-500">
-  <div class="p-6">
-    <p class="text-white font-semibold text-md">
-      {{ getBoardname }}
-    </p>
-    <div
-      class="cursor-pointer hover:bg-gray-200 hover:text-gray-800 h-12 w-44 flex items-center justify-center rounded-lg"
-    >
-      <p class="text-lg">+ Add List</p>
-    </div>
-  </div>
-</div> -->
-
-<!-- app.component.html -->
-
 <app-header class="sticky top-0"></app-header>
 <div class="h-screen bg-[#d9dbc3]">
   <div class="p-6">
@@ -30,23 +14,22 @@
             <p>{{ item.listname }}</p>
 
             <div
-              *ngFor="let card of item.cards; let j = index"
+              *ngFor="let card of item.cards"
               class="drop w-full h-full p-1 flex flex-col items-center justify-center"
               id="dp1"
               droppable="true"
               (dragover)="onDragOver($event)"
-              (drop)="onDrop($event)"
+              (drop)="onDrop($event, item.listname)"
             >
               <div
                 id="dg5"
                 draggable="true"
                 class="drag w-full bg-white p-2 rounded-md shadow-md text-gray-500 mt-1"
-                (dragstart)="onDragStart($event)"
+                (dragstart)="onDragStart($event, item.listname, card.id)"
               >
                 {{ card.cardname }}
               </div>
             </div>
-
             <ng-container *ngIf="showAddCard[i]; else newCard">
               <div
                 class="cursor-pointer hover:bg-gray-200 hover:text-gray-800 h-12 w-44 flex items-center justify-center rounded-lg"
