@@ -1,0 +1,78 @@
+<!-- <app-header class="sticky top-0"></app-header>
+<div class="h-screen bg-blue-500">
+  <div class="p-6">
+    <p class="text-white font-semibold text-md">
+      {{ getBoardname }}
+    </p>
+    <div
+      class="cursor-pointer hover:bg-gray-200 hover:text-gray-800 h-12 w-44 flex items-center justify-center rounded-lg"
+    >
+      <p class="text-lg">+ Add List</p>
+    </div>
+  </div>
+</div> -->
+
+<!-- app.component.html -->
+
+<app-header class="sticky top-0"></app-header>
+
+<div class="h-screen bg-blue-500">
+  <div class="p-6">
+    <p class="text-white font-semibold text-md">
+      {{ getBoardname }}
+    </p>
+
+    <!-- Show "Add List" or "New List" div based on a condition -->
+    <ng-container *ngIf="showAddList; else newList">
+      <div
+        class="cursor-pointer hover:bg-gray-200 hover:text-gray-800 h-12 w-44 flex items-center justify-center rounded-lg"
+        (click)="showAddListForm()"
+      >
+        <p class="text-lg">+ Add a list</p>
+      </div>
+    </ng-container>
+
+    <ng-template #newList>
+      <div class="flex items-center rounded-lg bg-white w-1/4">
+        <form [formGroup]="listform" (ngSubmit)="onSubmit()" class="w-full">
+          <div class="flex flex-col p-3">
+            <input
+              placeholder="Enter list title"
+              formControlName="name"
+              class="mr-2 p-2 border border-gray-300 rounded w-full"
+            />
+            <input
+              hidden
+              placeholder="Enter list title"
+              formControlName="boardname"
+              class="mr-2 p-2 border border-gray-300 rounded w-full"
+            />
+            <div class="flex">
+              <button
+                class="m-2 w-1/2 bg-green-500 text-white px-4 py-2 rounded"
+              >
+                Add List
+              </button>
+              <button (click)="cancelAddList()">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="w-6 h-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </ng-template>
+  </div>
+</div>
