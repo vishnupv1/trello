@@ -14,6 +14,7 @@ import { StoreModule } from '@ngrx/store';
 import { listReducer } from './store/reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { FirstpageComponent } from './modules/firstpage/firstpage.component';
+import { userEffects } from './store/effect';
 
 
 @NgModule({
@@ -36,7 +37,7 @@ import { FirstpageComponent } from './modules/firstpage/firstpage.component';
       lists: listReducer,
 
     }),
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([userEffects]),
 
   ],
   providers: [],

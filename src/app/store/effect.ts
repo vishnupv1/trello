@@ -7,12 +7,11 @@ import { UserservicesService } from "../services/userservices.service";
 
 @Injectable()
 export class userEffects {
-    userNum: string | null = localStorage.getItem('userNum')
     constructor(private action$: Actions, private userService: UserservicesService) { }
-
-    loadLists$ = createEffect(() =>
+    loadList$ = createEffect(() =>
         this.action$.pipe(ofType(fetchList), switchMap(() => {
-            return this.userService.getList().pipe(map((data) =>
-                fetchListSuccess({ lists: Object.values(data) })))
+            return this.userService.getBoard().pipe(map((data) => {
+                return fetchListSuccess({ lists: Object.values(data) })
+            }))
         })))
 }
